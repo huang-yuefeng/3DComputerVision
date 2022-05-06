@@ -1,6 +1,5 @@
 # Fix AliceVision Installation Issues
 	
-	@(3d reconstruction)
 	
 	
 	
