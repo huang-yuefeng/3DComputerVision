@@ -17,7 +17,7 @@ of source code `/AliceVision/src/aliceVision/multiview/rotationAveraging/l1.cpp`
 5. Reset source code to original version with previous memory error to test. All bugs are clean.
 	
 ```mermaid
-graphLR
+			graphLR
 			
 			
 			av-->assimp((Assimp>=5.0.0))
