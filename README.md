@@ -18,7 +18,7 @@ of source code `/AliceVision/src/aliceVision/multiview/rotationAveraging/l1.cpp`
 	
 ```mermaid
 			
-			graphLR
+			graph LR
 			
 			
 			av-->assimp((Assimp>=5.0.0))
