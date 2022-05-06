@@ -16,7 +16,8 @@ of source code `/AliceVision/src/aliceVision/multiview/rotationAveraging/l1.cpp`
 4. The exact reason may be `eigen` related `so` has some issue depending by AliceVison. Update `eigen` installation from version `3.3.7` to `3.4.0`.  Moreover, update `ceres-solver` from version `1.14.0` to `2.1.0`. This memory error disappeared.
 5. Reset source code to original version with previous memory error to test. All bugs are clean.
 	
-```graphLR
+```mermaid
+graphLR
 			
 			
 			av-->assimp((Assimp>=5.0.0))
