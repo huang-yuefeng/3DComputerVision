@@ -22,6 +22,7 @@ graph TD
 
     subgraph MainThread
         direction TD
+        a
         subgraph transformAssociateToMap
             bb
         end
