@@ -21,6 +21,7 @@ graph TD
     end
 
     subgraph MainThread
+        direction TD
         subgraph transformAssociateToMap
             bb
         end
