@@ -1,19 +1,7 @@
 ```mermaid
-graph TD
-    %%transformAssociateToMap((transformAssociateToMap))
-    %%extractSurroundingKeyFrames((extractSurroundingKeyFrames))
-    %%downsampleCurrentScan((downsampleCurrentScan))
-    %%scan2MapOptimization((scan2MapOptimization))
-    %%saveKeyFramesAndFactor((saveKeyFramesAndFactor))
-    %%correctPoses((correctPoses))
-    %%publishTF((publishTF))
-    %%publishKeyPosesAndFrames((publishKeyPosesAndFrames))
-    %%clearCloud((clearCloud))
-    loopClosureThread((loopClosureThread))
-    visualizeMapThread((visualizeMapThread))
-
+graph TB
     subgraph Thread1
-        loopClosureThread
+        performLoopClosure
     end
 
     subgraph Thread2
@@ -21,23 +9,64 @@ graph TD
     end
 
     subgraph MainThread
-        direction TD
-        
-        
-        a
+        direction TB
         subgraph transformAssociateToMap
+            direction TB
             bb
+            cc
+
         end
         subgraph extractSurroundingKeyFrames
-           aa
+            direction TB
+            aa --> dd --> ee 
         end
-        %%transformAssociateToMap --> extractSurroundingKeyFrames
-        %%extractSurroundingKeyFrames --> downsampleCurrentScan
-        %%downsampleCurrentScan --> scan2MapOptimization
-        %%scan2MapOptimization --> saveKeyFramesAndFactor
-        %%saveKeyFramesAndFactor --> correctPoses
-        %%correctPoses --> publishTF
-        %%publishTF --> publishKeyPosesAndFrames
-        %%publishKeyPosesAndFrames --> clearCloud
+        subgraph downsampleCurrentScan
+            direction TB
+        as
+        end
+        subgraph scan2MapOptimization
+            direction TB
+        ass
+        end
+        subgraph saveKeyFramesAndFactor
+            direction TB
+        asss
+        end
+        subgraph correctPoses
+            direction TB
+        assss
+        end
+        subgraph publishTF
+            direction TB
+        as5
+        end
+        subgraph publishKeyPosesAndFrames
+            direction TB
+        as6
+        end
+        subgraph clearCloud
+            direction TB
+        as7
+        end
+        bb--->cc
+        cc--->aa
+        ee--->as
+        as--->ass
+        ass--->asss
+        asss--->assss
+        assss--->as5
+        as5--->as6
+        as6--->as7
+
+        
     end
+    OtherNodes --subscribe message--> transformSum
+    OtherNodes --subscribe message--> laserCloudRaw
+    OtherNodes --subscribe message--> laserCloudOutlierLast
+    OtherNodes --subscribe message--> laserCloudCornerLast
+    OtherNodes --subscribe message--> laserCloudSurfLast
+    OtherNodes --subscribe message--> imuTime/Roll/Pitch
+    transformBefMapped
+    transformAftMapped
+    transformTobeMapped
 ```
