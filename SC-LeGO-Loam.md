@@ -1,3 +1,4 @@
+```mermaid
 graph TB
     %%subgraph Thread1
     %%    performLoopClosure
@@ -89,25 +90,12 @@ graph TB
 
         subgraph publishTF
             direction TB
-            odomAftMapped --> pose
-            odomAftMapped --> twist
-            odomAftMapped --> publish
+        as5
         end
-        correctAllPoses --> odomAftMapped
-        transformAftMapped --> pose
-        transformBefMapped --> twist
-
         subgraph publishKeyPosesAndFrames
             direction TB
-            pubKeyPoses
-            pubRecentKeyFrames
-            pubRegisteredCloud
+        as6
         end
-        cloudKeyPoses3D --> pubKeyPoses
-        laserCloudSurfFromMapDS --> pubRecentKeyFrames
-        laserCloudCornerLastDS --> pubRegisteredCloud
-        laserCloudSurfTotalLast --> pubRegisteredCloud
-        transformTobeMapped --> pubRegisteredCloud
         subgraph clearCloud
             direction TB
         as7
@@ -124,3 +112,73 @@ graph TB
     
     transformAftMapped
     transformTobeMapped
+```
+
+```mermaid
+graph TD
+    c1 --> a2
+    subgraph one
+    a1-->a2
+    end
+    subgraph two
+    b1-->b2
+    end
+    subgraph three
+    c1-->c2
+    end
+```
+
+```mermaid
+graph LR
+
+  subgraph TOP
+    direction TB
+    subgraph B1
+        direction RL
+        i1 -->f1
+    end
+    subgraph B2
+        direction BT
+        i2 -->f2
+    end
+  end
+
+    i1 --> f2
+```
+
+```mermaid
+graph LR
+a --- b
+```
+
+```mermaid
+graph TD
+a-->b
+```
+
+```mermaid
+graph TD
+a --> b
+```
+
+```mermaid
+graph TD
+
+A-->B
+C---D
+E--RUN!---F
+G---|RUN!|H
+I -.- J
+K .-> L
+M -."RUN(!".->N
+O ==RUN!==>P
+Q --RUN!-->R--STOP!-->S
+
+a --> b & c--> d
+e & f--> g & h
+```
+
+```mermaid
+graph  LR
+        id1["This is the (text) in the box"]
+```
