@@ -1,4 +1,3 @@
-```mermaid
 graph TB
     %%subgraph Thread1
     %%    performLoopClosure
@@ -141,7 +140,6 @@ graph TB
         laserCloudCornerLastDS --> pubRegisteredCloud
         laserCloudSurfTotalLast --> pubRegisteredCloud
         transformTobeMapped --> pubRegisteredCloud
-        
         subgraph clearCloud
             direction TB
             clearVariable
@@ -162,4 +160,3 @@ graph TB
     
     transformAftMapped
     transformTobeMapped
-```
