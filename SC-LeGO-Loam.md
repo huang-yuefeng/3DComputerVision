@@ -19,22 +19,35 @@ graph TB
         transformBefMapped --transform to-->transformIncre
         transformSum --transform to--> transformIncre
         transformAftMapped ---> transformTotransformTobeMapped
-        transformTotransformTobeMapped ---> transformTobeMapped
+        transformToTransformTobeMapped ---> transformTobeMapped
 
         subgraph extractSurroundingKeyFrames
             direction TB
+            determineLoopClosure --yes--> addAllKeyCorner --> laserCloudCornerFromMap
+            determineLoopClosure --yes--> addAllKeySurf --> addAllKeyOutlier --> laserCloudSurfFromMap
+            determineLoopClosure --yes--> addLastKeyCorner --> laserCloudCornerFromMap
+            determineLoopClosure --yes--> addLastKeySurf --> addLastKeyOutlier --> laserCloudSurfFromMap
+            determineLoopClosure --no--> searchsurroundingKeyPoses --down sample--> surroundingKeyPosesDS
+            surroundingKeyPosesDS --remove old and add new-->surroundingCornerCloudKeyFrames --> laserCloudCornerFromMap
+            surroundingKeyPosesDS --remove old and add new-->surroundingSurfCloudKeyFrames --> laserCloudSurfFromMap
+            surroundingKeyPosesDS --remove old and add new-->surroundingOutlierCloudKeyFrames --> laserCloudSurfFromMap 
+            laserCloudSurfFromMap --downsample--> laserCloudSurfFromMapDS --> finishExtractSurroundingKeyFrames
+            laserCloudCornerFromMap --downsample--> laserCloudCornerFromMapDS --> finishExtractSurroundingKeyFrames
         end
+        transformTotransformTobeMapped --> determineLoopClosure
+
         subgraph downsampleCurrentScan
             direction TB
-            downSizeFilterScancontext ---> laserCloudRawDS ---> downsampleCurrentScanfinish
-            downSizeFilterCorner ---> laserCloudCornerLastDS ---> downsampleCurrentScanfinish
-            downSizeFilterSurf ---> laserCloudSurfLastDS
-            downSizeFilterOutlier ---> laserCloudOutlierLastDS
+            startDownsampleCurrentScan --> downSizeFilterScancontext ---> laserCloudRawDS ---> downsampleCurrentScanfinish
+            startDownsampleCurrentScan -->downSizeFilterCorner ---> laserCloudCornerLastDS ---> downsampleCurrentScanfinish
+            startDownsampleCurrentScan -->downSizeFilterSurf ---> laserCloudSurfLastDS
+            startDownsampleCurrentScan -->downSizeFilterOutlier ---> laserCloudOutlierLastDS
             downSizeFilterSurf ---> laserCloudSurfTotalLastDS ---> downsampleCurrentScanfinish
             laserCloudOutlierLastDS ---> laserCloudSurfTotalLast 
             laserCloudSurfLastDS ---> laserCloudSurfTotalLast
             laserCloudSurfTotalLast ---> downSizeFilterSurf
         end
+        finishExtractSurroundingKeyFrames --> startDownsampleCurrentScan
         laserCloudRawHandler ---> laserCloudRaw ---> downSizeFilterScancontext
         laserCloudCornerLastHandler ---> laserCloudCornerLast ---> downSizeFilterCorner
         laserCloudOutlierLastHandler ---> laserCloudOutlierLast ---> downSizeFilterOutlier
@@ -42,13 +55,31 @@ graph TB
 
         subgraph scan2MapOptimization
             direction TB
-            cornerOptimization --> surfOptimization --> LMOptimization --> transformUpdate
+            LMOptimization --> transformUpdate
             transformUpdate -- time interplation --> IMUPitch&Roll --> updatetransformTobeMapped --> updatetransformAftMapped --> updatetransformBefMapped
+            cornerOptimization --> transformSelPointToMap --> findNearestPointFromCornerMap --> CalculateCOVOfMapPoints --> CalculateEigenVectorOfCOV -->GetLineDirection --> CheckDistanceBetweenMapPointAndLine--> CalculateDistanceBetweenPointAndLine
+            kdtreeCornerFromMap --> findNearestPointFromCornerMap
+            CalculateDistanceBetweenPointAndLine -->laserCloudOri
+            CalculateDistanceBetweenPointAndLine -->coeffSel
+            surfOptimization--> transformSelPointToMap --> findNearestPointFromSurfMap --> calculateABCByPlaneEquation --> checkDistanceBetweenMapPointAndPlane --> CalculateDistanceBetweenPointAndPlane
+            kdtreeSurfFromMap --> findNearestPointFromSurfMap
+            CalculateDistanceBetweenPointAndPlane -->laserCloudOri
+            CalculateDistanceBetweenPointAndPlane -->coeffSel
+            laserCloudOri --> transformbyTransformTobeMapped --> LMOptimization
+            coeffSel --> LMOptimization 
+            LMOptimization --> getGradientOfTransformTobeMapped --> determineGenerate --> adjustGenerate --> updatetransformTobeMappedByLM --> determineMapOptimizationFihish
+            determineMapOptimizationFihish --> updatetransformTobeMappedbyIMU --> updatetransformAftMapped --> updatetransformBefMapped
         end
+        laserCloudCornerLastDS --> cornerOptimization
+        laserCloudSurfFromMapDS --> kdtreeSurfFromMap
+        laserCloudCornerFromMapDS --> kdtreeCornerFromMap
         downsampleCurrentScanfinish ---> cornerOptimization
-        updatetransformTobeMapped --weighed IMUPitch&Roll--> transformTobeMapped
+        updatetransformTobeMappedbyIMU --weighed IMUPitch&Roll--> transformTobeMapped
         updatetransformAftMapped --transformTobeMapped-->transformAftMapped
         updatetransformBefMapped --transformSum--> transformBefMapped
+        transformTobeMapped --> updatetransformTobeMappedbyIMU
+        transformTobeMapped --> updatetransformTobeMappedByLM
+        transformTobeMapped --> transformbyTransformTobeMapped
 
         subgraph saveKeyFramesAndFactor
             direction TB
@@ -90,18 +121,37 @@ graph TB
 
         subgraph publishTF
             direction TB
-        as5
+            odomAftMapped --> pose
+            odomAftMapped --> twist
+            odomAftMapped --> publish
         end
+        correctAllPoses --> odomAftMapped
+        transformAftMapped --> pose
+        transformBefMapped --> twist
+
         subgraph publishKeyPosesAndFrames
             direction TB
-        as6
+            publishKeyPosesAndFramesstart -->pubKeyPoses -->publishFinish
+            publishKeyPosesAndFramesstart -->pubRecentKeyFrames -->publishFinish
+            publishKeyPosesAndFramesstart -->pubRegisteredCloud -->publishFinish
         end
+        odomAftMapped-->publishKeyPosesAndFramesstart
+        cloudKeyPoses3D --> pubKeyPoses
+        laserCloudSurfFromMapDS --> pubRecentKeyFrames
+        laserCloudCornerLastDS --> pubRegisteredCloud
+        laserCloudSurfTotalLast --> pubRegisteredCloud
+        transformTobeMapped --> pubRegisteredCloud
+        
         subgraph clearCloud
             direction TB
-        as7
+            clearVariable
         end
-
-        laserOdometryHandler --subscribe message--> transformSum           
+        publishFinish --> clearVariable
+        laserCloudCornerFromMap --> clearVariable
+        laserCloudSurfFromMap --> clearVariable
+        laserCloudCornerFromMapDS --> clearVariable
+        laserCloudSurfFromMap --> clearVariable
+        laserCloudSurfFromMapDS --subscribe message--> transformSum           
     end
 
     %%OtherNodes --subscribe message--> laserCloudRaw
@@ -112,73 +162,4 @@ graph TB
     
     transformAftMapped
     transformTobeMapped
-```
-
-```mermaid
-graph TD
-    c1 --> a2
-    subgraph one
-    a1-->a2
-    end
-    subgraph two
-    b1-->b2
-    end
-    subgraph three
-    c1-->c2
-    end
-```
-
-```mermaid
-graph LR
-
-  subgraph TOP
-    direction TB
-    subgraph B1
-        direction RL
-        i1 -->f1
-    end
-    subgraph B2
-        direction BT
-        i2 -->f2
-    end
-  end
-
-    i1 --> f2
-```
-
-```mermaid
-graph LR
-a --- b
-```
-
-```mermaid
-graph TD
-a-->b
-```
-
-```mermaid
-graph TD
-a --> b
-```
-
-```mermaid
-graph TD
-
-A-->B
-C---D
-E--RUN!---F
-G---|RUN!|H
-I -.- J
-K .-> L
-M -."RUN(!".->N
-O ==RUN!==>P
-Q --RUN!-->R--STOP!-->S
-
-a --> b & c--> d
-e & f--> g & h
-```
-
-```mermaid
-graph  LR
-        id1["This is the (text) in the box"]
 ```
