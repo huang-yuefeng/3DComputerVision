@@ -1,4 +1,5 @@
-```graphTD
+```mermaid
+			graph TD
 
 			Start((Start)) --> NotInit
 			MonoInit --> Init
