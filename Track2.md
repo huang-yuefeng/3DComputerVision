@@ -66,8 +66,6 @@
 			Select2(Select iteratively from Best Covisibility Key Frames) --> CandidateKeyFrames
 			CandidateKeyFrames((Candidate Key Frames))
 ```
-```graphTD
-			TrackWithMotionModel((Track With Motion Model))
 ```mermaid
       graph TD
 			SearchByBow((SearchByBow)) --> GetBowNode(Get Bow Node from KeyFrame and Frame)
