@@ -32,7 +32,8 @@
 			Good2 --> Check3(Check Good Points between 30 and 50)
 			Check3 --> MoreMore3DPoints((More and More 3D Map Points))
 			SearchByProjection --> MoreMore3DPoints
-			MoreMore3DPoints --> BA3((Optimize RT by 3D Map Points))
+			MoreMore3DPoints --> Check4(Check 3D Map Points Count Bigger Than 50)
+			Check4 --> BA3((Optimize RT by 3D Map Points))
 			PoseOptimization --> BA3
 			BA3 --> Good3((Good Points))
 			Good3 --> Check
