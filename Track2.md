@@ -105,3 +105,36 @@
 			ComputerError((Default Computer Error)) --> Optimize
 			Optimize --> CurrentRT((Current Frame RT))
 ```
+
+
+```mermaid
+			graph TD
+				SearchByProjection((Search Current Frame by Projecting Previous Frame)) --> IterateMP(Iterate Every Map Points of Previous Frame)
+				IterateMP --> OneMP((One Map Point))
+				OneMP --> Project2DPoint(Project to 2D Point in Current Frame)
+				Project2DPoint --> 2DPoint((2D Point of Current Frame)) 
+				
+				CheckNearFar(Check Current Frame Nearer or Father)
+				PreviousRT((Previous Frame RT)) --> DeltaDepth((Delta Depth))
+				CurrentRT((Current Frame RT)) --> DeltaDepth((Delta Depth))
+				DeltaDepth --> CheckNearFar
+				CheckNearFar --> CurrentSearchScale((Current Search Scales))
+				
+				2DPoint --> SearchCandidate2DPoint(Search Candidate 2D Matching Points in Current Frame)
+				CurrentSearchScale --> SearchCandidate2DPoint
+				SearchCandidate2DPoint --> Candidate2DPoints((Candidate 2D Matching Points in Current Frame))
+				Candidate2DPoints --> IterateCandidates(Iterate Candidate 2D Points)
+				IterateCandidates --> OneCandidateP((One Candidate 2D Point))
+				OneCandidateP --> CheckHave3DMP(Check It Has 3D Map Pints)
+				CheckHave3DMP --> 2DPDesp((2D Candidate Point Descriptor))
+				OneMP --> 3DMPDesp((3D Map Point Descriptor))
+				2DPDesp --> FindBestSimliliarMatch(Find Best Match Between 2D Point and 3D Map Point)
+				3DMPDesp --> FindBestSimliliarMatch
+				FindBestSimliliarMatch --> BestMatch((Best Match of 2D Point and 3D Point))	
+				BestMatch --> CheckInTolerance
+				CheckInTolerance --> New3DMP((New 3D Map Point of Current Frame))	
+				New3DMP --> CheckOrientation(Check Orientation is Good)	
+				2DPDesp --> CheckOrientation
+				3DMPDesp --> CheckOrientation
+				CheckOrientation --> All3DMP((All 3D Map Points of Current Frame))
+```
