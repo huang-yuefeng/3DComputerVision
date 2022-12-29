@@ -1,3 +1,36 @@
+```mermaid 
+		graph TD
+			TrackWithMotionModel((Track With Motion Model)) --> UpdateLastFrame
+			CalLastFramePose(Calculate Pose of Last Frame) --> LastFramePose((Pose of Last Frame))
+			LastFrameKPPose((Last Frame Key Frame Pose)) --> CalLastFramePose
+			RelativeFramePose((Relative Pose Between Frame and Key Frame)) --> CalLastFramePose			
+			UpdateLastFrame(Update Last Frame) --> LastFrameKPPose
+			UpdateLastFrame --> RelativeFramePose
+			
+			
+			CurrentFramePose((Pose of Current Frame)) --> SearchByProjection
+			LastFramePose --> SearchByProjection
+			LastFramePose --> CurrentFramePose
+			LastFramePose --> Velocity
+			LastLastFramePose((Last Last Frame Pose)) --> Velocity
+			Velocity((Velocity)) --> CurrentFramePose	
+					
+			SearchByProjection2 --> 3DMapPoints
+			SearchByProjection(Search By Projection) --> 3DMapPoints((3D Map Points of Current Frame))
+			SearchByProjection --> Check(Check Match Points Count Smaller than 20)
+			Check --> SearchByProjection2(Search By Projection with Bigger Tolerance)
+			SearchByProjection2 --> Check2
+			Check2(Check Match Points Count Smaller than 20) --> Fail((Fail))
+						CurrentFramePose --> BetterCurrentFramePose((Better Pose of Current Frame))
+			3DMapPoints --> BetterCurrentFramePose
+			PoseOptimization(Pose Optimization By BA) --> BetterCurrentFramePose
+			PoseOptimization --> Outlier((Outlier 3D Map Points)) 
+			
+			3DMapPoints --> Valid3DMapPoints((Inlier 3D Map Points of Current Frame))
+			Outlier --> Valid3DMapPoints
+			Outlier --> Check3(Check 3D Map Points Visibility Quality in Tracking Mode)
+			Check3 --> VisibilityFlag((Low Visibility Quality Flag for Tracking Mode))
+```
 ```mermaid
 		graph TD
 			Relocalization((Relocalization)) --> CandidateKeyFrames((Candidate Key Frames))
