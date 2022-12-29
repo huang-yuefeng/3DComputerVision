@@ -235,3 +235,12 @@
 			ChildKF --> LocalKF
 			ParentKF --> LocalKF
 ```
+```mermaid 
+		graph TD
+			UpdateLocalPoints((Update Local 3D Map Points)) --> IterateKF
+			LocalKF((Local Key Frames)) --> IterateKF(Iterate Key Frames)
+			IterateKF --> OneKF((One Key Frames))
+			OneKF --> IterateMP(Iterate 3D Map Points)
+			IterateMP --> OneMP((One 3D Map Point))
+			OneMP --> LocalMapPoints((Local 3D Map Points))
+```
