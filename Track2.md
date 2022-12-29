@@ -213,3 +213,25 @@
 				3DMPDesp --> CheckOrientation
 				CheckOrientation --> All3DMP((All 3D Map Points of Current Frame))
 ```
+```mermaid 
+		graph TD
+			UpdateLocalKeyFrames((Update Related Key Frames of Current Frame)) --> FindCovisibilityKeyFrame(Find Key Frames with Common 3D Map Points)
+			FindCovisibilityKeyFrame --> KeyFramesWithCommonMP((Key Frames with Common 3D Map Points))
+			KeyFramesWithCommonMP --> FindMaxKF(Find Best Key Frame)
+			FindMaxKF --> MaxKF((Key Frame with Most Common 3D Map Points))
+			MaxKF --> RefrenceKF((Refrence Key Frame))
+
+			KeyFramesWithCommonMP --> IterateKeyFrames(Iterate Key Frames)
+			IterateKeyFrames --> OneKFWithCommonMP((One Key Frame With Common 3D Map Points))
+			OneKFWithCommonMP --> FindCovisibilityKF(Find 10 Covisibility Key Frames)
+			FindCovisibilityKF --> 10CovisibilityKF((10 Covisibility Key Frames))
+			OneKFWithCommonMP --> FindChildKF(Find Child Key Frames)
+			FindChildKF --> ChildKF((Child Key Frames))
+			OneKFWithCommonMP --> FindParentKF(Find Parent Key Frames)
+			FindParentKF --> ParentKF((Parent Key Frames))
+			
+			KeyFramesWithCommonMP --> LocalKF((Local Key Frames))
+			10CovisibilityKF --> LocalKF
+			ChildKF --> LocalKF
+			ParentKF --> LocalKF
+```
