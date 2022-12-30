@@ -75,9 +75,33 @@
 ```
 ```mermaid
 		graph TD
+			DetectRelocalizationCandidates((DetectRelocalizationCandidates))
+			DBOW((DBOW)) --> SearchByDBOW
+			DetectRelocalizationCandidates --> SearchByDBOW(SearchByBow)
+			SearchByDBOW --> KeyFramesWithSameWord((Key Frames with Common Words))
+			KeyFramesWithSameWord --> CalculateTolerance(Calculate Tolerance)
+			CalculateTolerance --> Tolerance((Tolerance=MaxCommonWordsCount*0.8))
+			Tolerance --> SelectKeyFrames(Select Key Frames by Tolerance)
+			KeyFramesWithSameWord --> SelectKeyFrames
+			SelectKeyFrames --> KeyFrames1((Key Frames with More Common Words))
+			KeyFrames1 --> Iterate(Iterate Each Frame)
+			Iterate --> OneCandidateFrame((One Candidate Frame))
+			OneCandidateFrame --> GetBestCovisibility(Get 10 Best Covisibility Key Frames)
+			GetBestCovisibility --> 10Frames((10 Candidates Frames))
+			10Frames --> Select1((Select iterately 10 Frames))
+			Select1 --> BestFrame((Best Covisibility Key Frames))
+			Select1 --> Score((Candiates and Covisibility Total Scores))
+			Select1 --> BestScore((Best Total Score))
+			Score --> BestScore
+			BestScore --> CalTolerance2(Calculate Tolerance)
+			CalTolerance2 --> Tolerance2((Tolerance2=BetstTotalScore*0.75))
+			Tolerance2 --> Select2
+			BestFrame --> Select2
+			Select2(Select iteratively from Best Covisibility Key Frames) --> CandidateKeyFrames
+			CandidateKeyFrames
 			
 			Relocalization((Relocalization)) --> CandidateKeyFrames((Candidate Key Frames))
-			DetectRelocalizationCandidates((DetectRelocalizationCandidates)) --> FindCandidateKeyFrames
+			
 			FindCandidateKeyFrames(FindcandidateKeyFrames) --> CandidateKeyFrames
 			CandidateKeyFrames --> IterateCandidates(Iterate Candidate Key Frames one by one)
 			IterateCandidates --> Candidate((Candidate KF))
