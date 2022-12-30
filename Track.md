@@ -301,3 +301,27 @@
 			CurrentMP --> BA
 
 ```
+
+```mermaid
+	graph TD
+			Relocalization((Relocalization)) --> CandidateKF((Candidate Key Frames))
+			CandidateKF --> CurrentMP((Map Points of Current Frame))
+			CurrentMP --> EPNP((EPNP))
+			EPNP --> CurrentRT((RT of Current Frame))
+			EPNP --> InlierMP((Inlier Map Points of Current Frame))
+			CurrentRT --> BA((BA))
+			InlierMP --> BA
+			BA --> CurrentRT2((RT of Current Frame))
+			CandidateKF --> MoreMP((More Map Points of Current Frame))
+			MoreMP --> BA2((BA))
+			CurrentRT2 --> BA2
+```
+
+```mermaid
+	graph TD
+			TrackLocalMap((TrackLocalMap)) --> MoreKF((More Key Frames with Common Map Points))
+			MoreKF --> MoreMP((More Map Points From More Key Frames))
+			MoreMP --> GoodMP((Good Map Points))
+			GoodMP --> BA((BA))
+			CurrentRT((RT of Current Frame)) --> BA
+```
