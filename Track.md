@@ -153,8 +153,8 @@
 ```mermaid
       graph TD
 			TrackReferenceKeyFrame((TrackReferenceKeyFrame)) --> ComputeBow(Compute for DBOW)
-			ComputeBow --> DBOW
-			DBOW((DBOW Search)) --> MatchedMapPoints((Matched Map Points))
+			ComputeBow --> SearchByBow
+			SearchByBow((SearchByBow)) --> MatchedMapPoints((Matched Map Points))
 			RefKeyFrame((Reference Key Frame)) --> DBOW
 			MatchedMapPoints --> PoseOptimization((PoseOptimization))
 			LastRT((Last Frame RT)) --> PoseOptimization
