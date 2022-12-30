@@ -1,7 +1,7 @@
 ```mermaid
 			graph TD
 
-			Start((Start)) --> NotInit
+			Track((Track)) --> NotInit
 			MonoInit --> Init
 			MonoInitWithMap --> Init
 			NotInit((Not Initialized)) --> NoMap((No Map))
@@ -42,7 +42,7 @@
 ```
 ```mermaid 
 		graph TD
-			TrackWithMotionModel((Track With Motion Model)) --> UpdateLastFrame
+			TrackWithMotionModel((TracWithMotionModel)) --> UpdateLastFrame
 			CalLastFramePose(Calculate Pose of Last Frame) --> LastFramePose((Pose of Last Frame))
 			LastFrameKPPose((Last Frame Key Frame Pose)) --> CalLastFramePose
 			RelativeFramePose((Relative Pose Between Frame and Key Frame)) --> CalLastFramePose			
@@ -117,7 +117,7 @@
 ```
 ```mermaid
 		graph TD
-			DetectRelocalizationCandidates((Detect Relocalization Candidates))
+			DetectRelocalizationCandidates((DetectRelocalizationCandidates))
 			DBOW((DBOW)) --> SearchByDBOW
 			DetectRelocalizationCandidates --> SearchByDBOW(Search By DBOW)
 			SearchByDBOW --> KeyFramesWithSameWord((Key Frames with Common Words))
@@ -152,7 +152,7 @@
 ```
 ```mermaid
       graph TD
-			TrackReferenceKeyFrame((Track with Reference Key Frame)) --> ComputeBow(Compute for DBOW)
+			TrackReferenceKeyFrame((TrackReferenceKeyFrame)) --> ComputeBow(Compute for DBOW)
 			ComputeBow --> DBOW
 			DBOW((DBOW Search)) --> MatchedMapPoints((Matched Map Points))
 			RefKeyFrame((Reference Key Frame)) --> DBOW
@@ -184,7 +184,7 @@
 
 ```mermaid
 			graph TD
-				SearchByProjection((Search Current Frame by Projecting Previous Frame)) --> IterateMP(Iterate Every Map Points of Previous Frame)
+				SearchByProjection((SearchByProjection)) --> IterateMP(Iterate Every Map Points of Previous Frame)
 				IterateMP --> OneMP((One Map Point))
 				OneMP --> Project2DPoint(Project to 2D Point in Current Frame)
 				Project2DPoint --> 2DPoint((2D Point of Current Frame)) 
@@ -215,7 +215,7 @@
 ```
 ```mermaid 
 		graph TD
-			UpdateLocalKeyFrames((Update Local Related Key Frames and 3D Map Points of Current Frame)) --> FindCovisibilityKeyFrame(Find Key Frames with Common 3D Map Points)
+			UpdateLocalKeyFrames((UpdateLocalKeyFramesAndPoints:Local Related Key Frames and 3D Map Points)) --> FindCovisibilityKeyFrame(Find Key Frames with Common 3D Map Points)
 			FindCovisibilityKeyFrame --> KeyFramesWithCommonMP((Key Frames with Common 3D Map Points))
 			KeyFramesWithCommonMP --> FindMaxKF(Find Best Key Frame)
 			FindMaxKF --> MaxKF((Key Frame with Most Common 3D Map Points))
