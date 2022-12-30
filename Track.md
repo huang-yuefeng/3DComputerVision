@@ -215,7 +215,7 @@
 ```
 ```mermaid 
 		graph TD
-			UpdateLocalKeyFrames((Update Related Key Frames of Current Frame)) --> FindCovisibilityKeyFrame(Find Key Frames with Common 3D Map Points)
+			UpdateLocalKeyFrames((Update Local Related Key Frames and 3D Map Points of Current Frame)) --> FindCovisibilityKeyFrame(Find Key Frames with Common 3D Map Points)
 			FindCovisibilityKeyFrame --> KeyFramesWithCommonMP((Key Frames with Common 3D Map Points))
 			KeyFramesWithCommonMP --> FindMaxKF(Find Best Key Frame)
 			FindMaxKF --> MaxKF((Key Frame with Most Common 3D Map Points))
@@ -234,10 +234,8 @@
 			10CovisibilityKF --> LocalKF
 			ChildKF --> LocalKF
 			ParentKF --> LocalKF
-```
-```mermaid 
-		graph TD
-			UpdateLocalPoints((Update Local 3D Map Points)) --> IterateKF
+			
+			
 			LocalKF((Local Key Frames)) --> IterateKF(Iterate Key Frames)
 			IterateKF --> OneKF((One Key Frames))
 			OneKF --> IterateMP(Iterate 3D Map Points)
