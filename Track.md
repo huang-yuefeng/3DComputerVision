@@ -276,3 +276,28 @@
 			CheckMatcher1 --> Success((Success))
 			CheckMatcher2 --> Success
 ```
+```mermaid
+	graph TD
+			TrackMotionModel((TrackMotionModel)) --> LastFrame
+			LastFrame((Last Frame)) --> LastRT((Last Frame RT))
+			LastFrame --> LastDeltaRT((Last Frame Delta RT))
+			LastFrame --> MP((Last Frame Map Point))
+			MP --> CurrentMP((Map Points of Current Frame))
+			LastRT --> CurrentRT((Current Rough RT))
+			LastDeltaRT --> CurrentRT
+			CurrentRT --> BA((BA))
+			CurrentMP --> BA
+```
+```mermaid
+	graph TD
+			TrackReference((TrackLocalMap)) --> LastFrame
+			LastFrame((Last Frame)) --> LastRT((Last Frame RT))
+			LastFrame --> MostCommonMPKF((Most Common Map Points Key Frame))
+			LastFrame --> BecomeNewKF(If Become New Key Frame)
+			BecomeNewKF --> CurrentMP
+			LastRT --> CurrentRT((Current Rough RT))
+			MostCommonMPKF --> CurrentMP((Map Points of Current Frame))
+			CurrentRT --> BA((BA))
+			CurrentMP --> BA
+
+```
