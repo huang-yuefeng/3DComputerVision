@@ -75,6 +75,7 @@
 ```
 ```mermaid
 		graph TD
+			
 			Relocalization((Relocalization)) --> CandidateKeyFrames((Candidate Key Frames))
 			DetectRelocalizationCandidates((DetectRelocalizationCandidates)) --> FindCandidateKeyFrames
 			FindCandidateKeyFrames(FindcandidateKeyFrames) --> CandidateKeyFrames
@@ -148,7 +149,7 @@
 			TrackReferenceKeyFrame((TrackReferenceKeyFrame)) --> ComputeBow(Compute for DBOW)
 			ComputeBow --> SearchByBow	
 			SearchByBow((SearchByBow)) --> MatchedMapPoints
-			RefKeyFrame((Reference Key Frame)) --> SearchByBow
+			RefKeyFrame((Reference Key Frame in Track)) --> SearchByBow
 			MatchedMapPoints((Matched Map Points)) --> PoseOptimization((PoseOptimization))
 			LastRT((Last Frame RT)) --> PoseOptimization
 			PoseOptimization --> CurrentRT((Current Frame RT))
