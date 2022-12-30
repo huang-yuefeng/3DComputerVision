@@ -76,7 +76,7 @@
 ```mermaid
 		graph TD
 			Relocalization((Relocalization)) --> CandidateKeyFrames((Candidate Key Frames))
-			DetectRelocalizationCandidates((Detect Relocalization Candidate Key Frames)) --> FindCandidateKeyFrames
+			DetectRelocalizationCandidates((DetectRelocalizationCandidates)) --> FindCandidateKeyFrames
 			FindCandidateKeyFrames(FindcandidateKeyFrames) --> CandidateKeyFrames
 			CandidateKeyFrames --> IterateCandidates(Iterate Candidate Key Frames one by one)
 			IterateCandidates --> Candidate((Candidate KF))
@@ -119,7 +119,7 @@
 		graph TD
 			DetectRelocalizationCandidates((DetectRelocalizationCandidates))
 			DBOW((DBOW)) --> SearchByDBOW
-			DetectRelocalizationCandidates --> SearchByDBOW(Search By DBOW)
+			DetectRelocalizationCandidates --> SearchByDBOW(SearchByBow)
 			SearchByDBOW --> KeyFramesWithSameWord((Key Frames with Common Words))
 			KeyFramesWithSameWord --> CalculateTolerance(Calculate Tolerance)
 			CalculateTolerance --> Tolerance((Tolerance=MaxCommonWordsCount*0.8))
@@ -215,7 +215,7 @@
 ```
 ```mermaid 
 		graph TD
-			UpdateLocalKeyFrames((UpdateLocalKeyFramesAndPoints:Local Related Key Frames and 3D Map Points)) --> FindCovisibilityKeyFrame(Find Key Frames with Common 3D Map Points)
+			UpdateLocalKeyFrames((UpdateLocalKeyFramesAndPoints)) --> FindCovisibilityKeyFrame(Find Key Frames with Common 3D Map Points)
 			FindCovisibilityKeyFrame --> KeyFramesWithCommonMP((Key Frames with Common 3D Map Points))
 			KeyFramesWithCommonMP --> FindMaxKF(Find Best Key Frame)
 			FindMaxKF --> MaxKF((Key Frame with Most Common 3D Map Points))
@@ -245,6 +245,7 @@
 ```mermaid 
 		graph TD
 			TrackLocalMap((TrackLocalMap)) --> LocalMapPoints
+			UpdateLocalKeyFrames((UpdateLocalKeyFramesAndPoints)) --> LocalMapPoints
 			LocalMapPoints((Local 3D Map Points)) --> RemoveExistingMP(Remove Map Points Existing in Current Frame)
 			LocalMapPoints --> RemoveBadMP(Remove Bad Map Points)
 			RemoveExistingMP --> CandidateMP((Candidate 3D Map Points))		
