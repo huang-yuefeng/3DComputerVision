@@ -142,14 +142,7 @@
 			Select2(Select iteratively from Best Covisibility Key Frames) --> CandidateKeyFrames
 			CandidateKeyFrames((Candidate Key Frames))
 ```
-```mermaid
-      graph TD
-			SearchByBow((SearchByBow)) --> GetBowNode(Get Bow Node from KeyFrame and Frame)
-			GetBowNode --> Get2DPointFeature(Get 2D Point Feature from Bow Node of KeyFrame and Frame)
-			Get2DPointFeature --> Match2DPoint((Match 2D Point by Orb Descriptors Similarity))
-			Match2DPoint --> Assign3DPoint((Assign the Same 3D Point to Frame))
-			Assign3DPoint --> RemoveBadPoints(Remove Bad Matches by Similarity and Angle)			
-```
+
 ```mermaid
       graph TD
 			TrackReferenceKeyFrame((TrackReferenceKeyFrame)) --> ComputeBow(Compute for DBOW)
