@@ -146,12 +146,17 @@
 ```mermaid
       graph TD
 			TrackReferenceKeyFrame((TrackReferenceKeyFrame)) --> ComputeBow(Compute for DBOW)
-			ComputeBow --> SearchByBow			
+			ComputeBow --> SearchByBow	
+			SearchByBow((SearchByBow)) --> MatchedMapPoints
 			RefKeyFrame((Reference Key Frame)) --> SearchByBow
 			MatchedMapPoints((Matched Map Points)) --> PoseOptimization((PoseOptimization))
 			LastRT((Last Frame RT)) --> PoseOptimization
 			PoseOptimization --> CurrentRT((Current Frame RT))
 			
+			
+```
+```mermaid
+ 	graph TD
 			SearchByBow((SearchByBow)) --> GetBowNode(Get Bow Node from KeyFrame and Frame)
 			GetBowNode --> Get2DPointFeature(Get 2D Point Feature from Bow Node of KeyFrame and Frame)
 			Get2DPointFeature --> Match2DPoint((Match 2D Point by Orb Descriptors Similarity))
