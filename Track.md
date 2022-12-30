@@ -102,7 +102,6 @@
 			
 			Relocalization((Relocalization)) --> CandidateKeyFrames((Candidate Key Frames))
 			
-			FindCandidateKeyFrames(FindcandidateKeyFrames) --> CandidateKeyFrames
 			CandidateKeyFrames --> IterateCandidates(Iterate Candidate Key Frames one by one)
 			IterateCandidates --> Candidate((Candidate KF))
 			SearchByBow((Search by BOW)) --> 3DMapPoints
