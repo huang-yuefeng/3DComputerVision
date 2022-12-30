@@ -242,3 +242,31 @@
 			IterateMP --> OneMP((One 3D Map Point))
 			OneMP --> LocalMapPoints((Local 3D Map Points))
 ```
+```mermaid 
+		graph TD
+			TrackLocalMap((TrackLocalMap)) --> LocalMapPoints
+			LocalMapPoints((Local 3D Map Points)) --> RemoveExistingMP(Remove Map Points Existing in Current Frame)
+			LocalMapPoints --> RemoveBadMP(Remove Bad Map Points)
+			RemoveExistingMP --> CandidateMP((Candidate 3D Map Points))		
+			RemoveBadMP --> CandidateMP	
+			LocalMapPoints --> RemoveByDepth(Remove by Camera Coords Depth)
+			RemoveByDepth --> CandidateMP
+			LocalMapPoints --> RemoveByImageRange(Remove by Image Coords Range)
+			RemoveByImageRange --> CandidateMP
+			LocalMapPoints --> RemoveByDistanceToCamera(Remove by Distance to Camera)
+			RemoveByDistanceToCamera --> CandidateMP
+			LocalMapPoints --> RemoveByCameraAngle(Remove By Camera Angle)
+			RemoveByCameraAngle --> CandidateMP
+			CandidateMP --> SetParameter(Set Map Point Parameter)
+			SetParameter --> CandidateMP
+			CandidateMP --> PoseOptimization(Optimize RT by BA)
+			CurrentFrame((FCurrent Frame)) --> PoseOptimization
+			PoseOptimization --> FinalRT((Final RT of Current Frame))
+			PoseOptimization --> Outlier((Outlier Map Points))
+			Outlier --> SetMPFlag(Update Map Points Flag in Current Frame)
+			SetMPFlag --> MPFlag((Current Frame Map Points Flag))
+			Outlier --> CheckMatcher1(Check Matcher More Than 50 If Just Relocalization)
+			Outlier --> CheckMatcher2(Check Matcher More Than 30)
+			CheckMatcher1 --> Success((Success))
+			CheckMatcher2 --> Success
+```
